@@ -2,41 +2,50 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
+import { selectCars } from "../features/car/carSlice";
+import { useSelector } from 'react-redux';
 
 function Header() {
     const [burgerStatus, setBurgerStatus] = useState(false);
-  return (
-    <Container>
-        <a href="/">
-            <img src="/images/logo.svg" alt="logo" />
-        </a>
-        <Menu>
-            <p><a href="#">Model S</a></p>
-            <p><a href="#">Model 3</a></p>
-            <p><a href="#">Model X</a></p>
-            <p><a href="#">Model Y</a></p>
-        </Menu>
-        <BoxMenu>
-            <a href="#">Shop</a>
-            <a href="#">Tesla Account</a>
-            <CustomMenu onClick={ ()=> setBurgerStatus(true)} />
-        </BoxMenu>
-        <BurgerNav show={burgerStatus}>
-            <CloseWrapper>
-                <CustomClose onClick={ ()=> setBurgerStatus(false)} />
-            </CloseWrapper>
-            <li><a href="#">Existing Inventory</a></li>
-            <li><a href="#">Used Inventory</a></li>
-            <li><a href="#">Trade-In</a></li>
-            <li><a href="#">Test Drive</a></li>
-            <li><a href="#">Insurance</a></li>
-            <li><a href="#">Cybertruck</a></li>
-            <li><a href="#">Roadster</a></li>
-            <li><a href="#">Semi</a></li>
-            <li><a href="#">Charging</a></li>
-        </BurgerNav>
-    </Container>
-  )
+    const cars = useSelector(selectCars);
+    //console.log(cars);
+
+    return (
+        <Container>
+            <a href="/">
+                <img src="/images/logo.svg" alt="logo" />
+            </a>
+            <Menu>
+                { cars && cars.map((car, index) => (
+                    <p><a key={index} href="#">{car}</a></p>
+                ))}
+            </Menu>
+            <BoxMenu>
+                <a href="#">Shop</a>
+                <a href="#">Tesla Account</a>
+                <CustomMenu onClick={ ()=> setBurgerStatus(true)} />
+            </BoxMenu>
+            <BurgerNav show={burgerStatus}>
+                <CloseWrapper>
+                    <CustomClose onClick={ ()=> setBurgerStatus(false)} />
+                </CloseWrapper>
+                
+                { cars && cars.map((car, index) => (
+                    <li key={index}><a href="#">{car}</a></li>
+                ))}
+                
+                <li><a href="#">Existing Inventory</a></li>
+                <li><a href="#">Used Inventory</a></li>
+                <li><a href="#">Trade-In</a></li>
+                <li><a href="#">Test Drive</a></li>
+                <li><a href="#">Insurance</a></li>
+                <li><a href="#">Cybertruck</a></li>
+                <li><a href="#">Roadster</a></li>
+                <li><a href="#">Semi</a></li>
+                <li><a href="#">Charging</a></li>
+            </BurgerNav>
+        </Container>
+    )
 }
 
 export default Header;
